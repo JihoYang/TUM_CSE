@@ -1,0 +1,16 @@
+function yy=hermiteinterpol(a,b,y,w,xx)
+% evaluate Hermite polynomial p on interval [a,b]
+% function yy=hermiteinterpol(a,b,y,w,xx)
+%  p(a)  = y(1),  p(b)  = y(2)
+%  p'(a) = w(1),  p'(b) = w(2)
+% yy = p(xx)
+L = {...
+    @(x) (b-x).^2 .* (3*a-b-2*x) ./(a-b).^3 ,....
+    @(x) (a-x).^2 .* (a-3*b+2*x)./(a-b).^3, ....
+    @(x) (b-x).^2 .* (x-a) ./ (a-b).^2 , ...
+    @(x) (a-x).^2 .* (x-b) ./ (a-b).^2 };
+
+yy = y(1)*L{1}(xx) + w(1)*L{3}(xx) + ...
+     y(2)*L{2}(xx) + w(2)*L{4}(xx);
+
+end

@@ -1,0 +1,28 @@
+load('Adams_result_single_body.tab');
+time_ref = Adams_result_single_body(:,1);
+disp_ref = Adams_result_single_body(:,2);
+load('out_Euler.dat');
+time_Euler = out_Euler(:,1);
+disp_Euler = out_Euler(:,2);
+load('out_RK.dat');
+time_RK = out_RK(:,1);
+disp_RK = out_RK(:,2);
+load('out_BDF.dat');
+time_BDF = out_BDF(:,1);
+disp_BDF = out_BDF(:,2);
+
+plot(time_ref,disp_ref,'r');
+hold on;
+plot(time_Euler,disp_Euler,'b');
+plot(time_RK,disp_RK,'k');
+plot(time_BDF,disp_BDF,'g');
+
+h = legend('Reference from ADAMS','Explicit Euler','Runge Kutta','Backward Differentiation Formula/GEAR');
+set(gca,'FontSize',32)
+xlabel('Time', 'FontSize',32);
+ylabel('Displacement in mm', 'FontSize', 32);
+resize_legend(h, 1.2);
+fn = 'Comparission_of_Solvers';
+saveas(gcf, fn, 'fig');
+print( gcf, '-dbmp16m', fn );
+

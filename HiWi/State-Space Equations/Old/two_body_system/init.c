@@ -1,0 +1,89 @@
+#include "helper.h"
+#include "init.h"
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
+
+int read_parameters_1( const char *inFileName,       /* name of the file */
+                    double *stiffCoeff1,
+                    double *dampCoeff1,
+                    double *mass1,
+                    double *tEnd,
+                    double *tStart,
+                    double *stepHeight,
+                    double *dt,
+                    double *g,
+                    double *initialTension1
+                    ) {
+
+   READ_DOUBLE( inFileName, *stiffCoeff1 );
+   READ_DOUBLE( inFileName, *dampCoeff1 );
+   READ_DOUBLE( inFileName, *mass1 );
+   READ_DOUBLE( inFileName, *tEnd );
+   READ_DOUBLE( inFileName, *tStart );
+   READ_DOUBLE( inFileName, *stepHeight );
+   READ_DOUBLE( inFileName, *dt);
+   READ_DOUBLE( inFileName, *g);
+   READ_DOUBLE( inFileName, *initialTension1);
+
+   return 1;
+}
+
+
+int read_parameters_2( const char *inFileName,       /* name of the file */
+                    double *stiffCoeff2,
+                    double *dampCoeff2,
+                    double *mass2,
+                    double *tEnd,
+                    double *tStart,
+                    double *stepHeight,
+                    double *dt,
+                    double *g,
+                    double *initialTension2
+                    ) {
+
+   READ_DOUBLE( inFileName, *stiffCoeff2 );
+   READ_DOUBLE( inFileName, *dampCoeff2 );
+   READ_DOUBLE( inFileName, *mass2 );
+   READ_DOUBLE( inFileName, *tEnd );
+   READ_DOUBLE( inFileName, *tStart );
+   READ_DOUBLE( inFileName, *stepHeight );
+   READ_DOUBLE( inFileName, *dt);
+   READ_DOUBLE( inFileName, *g);
+   READ_DOUBLE( inFileName, *initialTension2);
+
+   return 1;
+}
+
+
+int write_output( char* outFileName, std::vector<double> Stime, std::vector<std::vector<double> > position, std::vector<std::vector<double> > vel,
+				   std::vector<std::vector<double> > acc, std::vector<std::vector<double> > force, std::vector<double> massIniPosition) {
+
+	char oFile[100] = "";
+	sprintf(oFile,"%s.dat",outFileName);
+	// Opening the file
+	FILE *fp = fopen (oFile, "w");
+
+	// Writing a small header
+	fprintf(fp,"*****************************************************\n");
+	fprintf(fp,"********  Simulation Results Two Body System  *************\n\n");
+	// Writing the column headings
+	fprintf(fp,"Time\tDisp_Body_1\tDisp_Body_2\n");
+
+	// Writing the values in
+	for(int i=0; i<Stime.size()-1; i++){
+		fprintf(fp,"%.8f\t%.8f\t%.8f\n",Stime.at(i),((massIniPosition.at(0) - position.at(0).at(i))*1000),
+				((massIniPosition.at(1) - position.at(1).at(i))*1000));
+	}
+
+
+	// Closing the file
+	fclose (fp);
+
+	return 1;
+}
+
+
+
+

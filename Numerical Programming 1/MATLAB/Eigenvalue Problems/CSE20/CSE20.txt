@@ -1,0 +1,221 @@
+
+
+A = randn(1000,833);
+Z = zeros(1000,1000-833);
+A = [A Z];
+rank(A)
+
+ans =
+
+   833
+
+[Q,~] = qr(randn(1000,1000));
+A = Q'*A*Q;
+spy(A)
+rank(A)
+
+ans =
+
+   833
+
+tic, [U,S,V] = svd(A,0); toc
+Elapsed time is 0.386584 seconds.
+tic, [U,S,V] = svd(A,0); toc
+Elapsed time is 0.392097 seconds.
+sigma = diag(S);
+plot(sigma,'.'), shg
+sigma(1)
+
+ans =
+
+          60.5779302222032
+
+norm(A,2)
+
+ans =
+
+          60.5779302222032
+
+norm(A,'fro')
+
+ans =
+
+          912.202539966379
+
+norm(sigma,2)
+
+ans =
+
+          912.202539966369
+
+A = randn(1000,833);
+b = randn(1000,1);
+x_LSQ = A\b;
+[U,S,V] = svd(A,0);
+x = V*diag(1./diag(S))*U'*b;
+norm(x_LSQ-x,inf)
+
+ans =
+
+      1.63757896132211e-15
+
+x = V*((U'*b)./diag(S));
+norm(x_LSQ-x,inf)
+
+ans =
+
+      1.47798440153224e-15
+
+height
+
+height =
+
+    47
+    93
+    53
+    45
+    67
+    42
+
+weight
+
+weight =
+
+    15
+    35
+    15
+    10
+    27
+    10
+
+A = [height weight]
+
+A =
+
+    47    15
+    93    35
+    53    15
+    45    10
+    67    27
+    42    10
+
+[U,S,V] = svd(A,0);
+sigma = diag(S)
+
+sigma =
+
+          156.435803726664
+          8.76580357940584
+
+sigma(2)/sigma(1)
+
+ans =
+
+        0.0560345098154263
+
+A1 = sigma(1)*U(:,1)*V(:,1)';
+height_pca = A1(:,1);
+weight_pca = A1(:,2);
+format short g
+height_pca
+
+height_pca =
+
+       46.702
+       94.032
+       52.081
+       43.386
+       68.287
+       40.696
+
+size = sigma(1)*U(:,1)
+
+size =
+
+      -49.327
+      -99.316
+      -55.008
+      -45.824
+      -72.125
+      -42.984
+
+size = -sigma(1)*U(:,1)
+
+size =
+
+       49.327
+       99.316
+       55.008
+       45.824
+       72.125
+       42.984
+
+height_pca2 = size*V(1,1)
+
+height_pca2 =
+
+      -46.702
+      -94.032
+      -52.081
+      -43.386
+      -68.287
+      -40.696
+
+height_pca2 = -size*V(1,1)
+
+height_pca2 =
+
+       46.702
+       94.032
+       52.081
+       43.386
+       68.287
+       40.696
+
+[height_pca height_pca2]
+
+ans =
+
+       46.702       46.702
+       94.032       94.032
+       52.081       52.081
+       43.386       43.386
+       68.287       68.287
+       40.696       40.696
+
+weight_pca2 = -size*V(2,1)
+
+weight_pca2 =
+
+       15.876
+       31.966
+       17.705
+       14.749
+       23.214
+       13.835
+
+[weight_pca weight_pca2]
+
+ans =
+
+       15.876       15.876
+       31.966       31.966
+       17.705       17.705
+       14.749       14.749
+       23.214       23.214
+       13.835       13.835
+
+pca
+imagesvd
+load detail
+clear size
+size(X)
+
+ans =
+
+   359   371
+
+[U,SV] = svd(X);
+[U,S,V] = svd(X);
+sigma = diag(S);
+figure(22), semilogy(sigma,'.'); shg 

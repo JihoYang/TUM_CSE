@@ -1,0 +1,167 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.10.4)  1 JUL 2016 11:25
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**Manual.tex
+(./Manual.tex
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (./Manual.aux)
+\openout1 = `Manual.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 14.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 14.
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--39
+
+ []
+
+[1
+
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+[2] [3] [4]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 162.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 162.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 162.
+
+Underfull \hbox (badness 10000) in paragraph at lines 174--175
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 181--182
+
+ []
+
+[5] [6]
+./Manual.tex:264: Missing $ inserted.
+<inserted text> 
+                $
+l.264 ...r\textunderscore f\textunderscore \langle
+                                                   force~value \rangle
+? 
+
+LaTeX Warning: Command \textunderscore invalid in math mode on input line 265.
+
+
+LaTeX Warning: Command \textunderscore invalid in math mode on input line 265.
+
+
+LaTeX Warning: Command \textunderscore invalid in math mode on input line 265.
+
+
+LaTeX Warning: Command \textunderscore invalid in math mode on input line 266.
+
+./Manual.tex:267: Missing $ inserted.
+<inserted text> 
+                $
+l.267 
+      
+? 
+./Manual.tex:267: Missing } inserted.
+<inserted text> 
+                }
+l.267 
+      
+? 
+
+Overfull \hbox (2.04315pt too wide) in paragraph at lines 260--267
+\OT1/cmr/m/n/12 Exp[]Stapler[]f[]$\OMS/cmsy/m/n/12 h\OML/cmm/m/it/12 force []va
+lue\OMS/cmsy/m/n/12 i[]\OML/cmm/m/it/12 v[]\OMS/cmsy/m/n/12 h\OML/cmm/m/it/12 v
+elocity []value\OMS/cmsy/m/n/12 i[]\OML/cmm/m/it/12 h[]\OMS/cmsy/m/n/12 h\OML/c
+mm/m/it/12 threshold []value\OMS/cmsy/m/n/12 i\OML/cmm/m/it/12 :dat[]$ 
+ []
+
+./Manual.tex:267: Extra }, or forgotten \endgroup.
+\par ...m \@noitemerr {\@@par }\fi \else {\@@par }
+                                                  \fi 
+l.267 
+      
+? 
+
+Overfull \hbox (17.17253pt too wide) in paragraph at lines 272--276
+\OT1/cmr/m/n/12 dis-place-ment com-pu-ta-tion. Both of them are im-ple-mented i
+n ``faml[]acc2disp.m",
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--276
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 277--278
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 279--285
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
+
+ []
+
+[8] (./Manual.aux) ) 
+Here is how much of TeX's memory you used:
+ 245 strings out of 493089
+ 2680 string characters out of 6134842
+ 57199 words of memory out of 5000000
+ 3804 multiletter control sequences out of 15000+600000
+ 9763 words of font info for 34 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 22i,6n,19p,451b,199s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmbx12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr17.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12
+.pfb>
+Output written on Manual.pdf (8 pages, 134772 bytes).
+PDF statistics:
+ 71 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

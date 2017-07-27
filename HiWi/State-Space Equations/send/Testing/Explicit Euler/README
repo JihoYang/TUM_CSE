@@ -1,0 +1,26 @@
+
+<Compilation>
+
+Makefile is used for compilation
+
+Hence for testing the codes, insert the following command lines in linux/UNIX terminal (ignoring the numbers):
+
+1. make
+
+2. ./sim
+
+Or simply include the functions to the main function
+
+<Cleaning the output files>
+
+For re-compilation do the following in the linux/UNIX terminal:
+
+1. make clean
+2. make
+
+
+<Function dependencies>
+
+explicit_euler.c, explicit_euler.h, helper.c, and helper.h must all be used
+
+

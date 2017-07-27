@@ -1,0 +1,39 @@
+$---------------------------------------------------------------------MDI_HEADER
+[MDI_HEADER]
+ FILE_TYPE     =  'tir'
+ FILE_VERSION  =  2.0
+ FILE_FORMAT   =  'ASCII'
+(COMMENTS)
+{comment_string}
+'Tire      - XXXXXX'
+'Pressure  - XXXXXX'
+'Test Date - XXXXXX'
+'Test tire'
+'New File Format v2.1'
+$--------------------------------------------------------------------------units
+[UNITS]
+ LENGTH              = 'mm'
+ FORCE               = 'newton'
+ ANGLE               = 'degree'
+ MASS                = 'kg'
+ TIME                = 'sec'
+$--------------------------------------------------------------------------model
+[MODEL]
+! 	use mode 	1	2 
+! 	-------------------------- 
+! 	smoothing		X 
+!
+ PROPERTY_FILE_FORMAT    = 'USER'
+ USER_SUB_ID           	 = 369
+ USE_MODE                = 2.0
+$----------------------------------------------------------------------dimension
+[DIMENSION]
+ UNLOADED_RADIUS         = 309.9
+ WIDTH                   = 235.0
+ ASPECT_RATIO            = 0.45
+$----------------------------------------------------------------------parameter
+[PARAMETER]
+ MASS                            = 310.0
+ SPRING_CONSTANT_VERTICAL        = 3.1
+ DAMPING_COEFF                   = 1.2
+ 

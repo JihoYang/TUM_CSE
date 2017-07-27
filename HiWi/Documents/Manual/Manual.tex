@@ -1,0 +1,307 @@
+\title{MATLAB based GUI for post-processing experimental data of superelastic tyres: ~~~~User Guide}
+\author{
+        Jiho Yang\\
+        M.Sc. student in Computational Science and Engineering\\
+        Department of Informatics\\
+        Chair of Scientific Computing\\
+        Technical University of Munich
+}
+\date{\today}
+
+\documentclass[12pt]{article}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This document provides the manual for using MATLAB based Graphical User
+Interface (GUI) for post-processing experimental data, and some of its
+theoretical details. This work has been conducted as a student job (HiWi) under
+Dipl.-Ing Seungyong Oh from Chair of Materials Handling, Material Flow, and
+Logistics, Department of Mechanical Engineering, Technical University of
+Munich, for post-processing experimental data of superelastic tyres. Since this
+GUI has been developed specifically for a particular problem, by no means it
+holds functionalities as a generalised data post-processing tool, although it
+can be used as a template for extending it for other applications.
+\end{abstract}
+
+\section{Introduction}
+There are 3 modules for each problem case: Hydropulser, Trommel, and Forklift.
+Each module has different functionalities implemented, although many of them
+overlap. All of these     modules essentially aim to do the following tasks: 1.
+Data import, 2. Plotting of the data, 3. Data processing (e.g. Damping
+coefficient computation, etc), 4. Data export.\\ 
+\\
+Please note that not all the details of functions used are described here.
+For further details, one should refer to the actual code. However, some details
+of the theories/methodologies implemented for data processing are briefly
+described in the document.
+
+%Hydropulser
+\section{Hydropulser Module}\label{Hydropulser}
+Within the Hydropulser folder, please use the codes inside ``Single file multiple variable calibration" directory.
+
+\subsection{Outline of functionalities}
+
+    \begin{enumerate}
+
+        \item   Data import (.txt file for Experimental data, and .dat file for Simulation data)
+
+        \item   Plotting of data for both Experimental and Simulation data
+
+        \item   Simulation data calibration (shift in x and y axis, and scale in y axis) for comparison with Experimental data
+
+        \item   Reset calibrated simulation data to its original values
+
+    \end{enumerate}
+
+\subsection{Manual}\label{hmanual}
+
+    \begin{enumerate}
+        \item   Run faml\textunderscore Hydropulser\textunderscore GUI.m
+
+        \item   Import experimental data using ``Browse" button next to ``Experimental Results". This will import
+    the experimental data and plot the following: Force vs Time, Displacement vs
+    Time, and Displacement vs Force in both GUI environment and figures.
+        
+        \item   Import simulation data using ``Browse" button next to ``Simulation
+    Results". The imported data file should hold the following data (in column order): 1.
+    Time, 2. Force, 3. Displacement, 4. Some data, 5. Some data. ``Some data" is
+    user specified when generating simulation data. It will then generate the same
+    plots as the experimental data on different plot panels. 
+
+        \item   Import up to 4 simulation data files for comparing multiple
+    simulation data set with experimental data. The number of simulation data files
+    is strictly limited (although if one wishes to import more data GUI will allow
+    it, but will only calibrate the first 4 simulation dataset. Newly imported
+    simulation data will be plotted on the same plot panels with corresponding
+    legends. These dataset will be denoted as T1-4.
+
+        \item   Select the simulation dataset (from T1-4) one wishes to calibrate (please make sure to select only one at a time - this applies to all the other cases). 
+
+        \item   Select the plot to be compared (Force vs Time, Displacement vs Time, or Displacement vs Force) 
+
+        \item   Select the operation (shift in y, x, or scale in y)
+
+        \item   Insert the calibration value
+
+        \item   Using ``Calibrate" button, perform calibration. This will calibrate
+    the data accordingy and regenerate the calibrated simulation data on the same
+    plot panels as experimental data. The net calibration value for each operation
+    (shift in y, x or scale in y) will be displayed in the legends. When shifting
+    in x axis, in particular, it is recommended to use small calibration value to
+    avoid the calibrated simulation data plot going out of the domain (it will
+    generate error message).
+
+        \item   If one wishes to reset the calibrated simulation data, push ``Reset"
+    button. This will reset all the calibrated dataset (T1-4) and plot the original
+    simulation dataset. Please note that this operation resets all the dataset
+    (i.e. it won't reset just one data set, say, T1). 
+        
+        \item   If one wishes to bring new simulation dataset, the GUI needs to be
+    reopened. Unfortunately, reset functionality for imported dataset is not
+    currently implemented
+
+    \end{enumerate}
+
+
+%Trommel
+\section{Trommel Module}\label{Trommel}
+
+\subsection{Outline of functionalities}
+
+    \begin{enumerate}
+
+        \item   Data import (.asc file for Experimental data, and .dat file for Simulation data)
+        \item   Plotting of data for both Experimental and Simulation data
+        \item   Calibrate displacement to obtain deflection
+        \item   Compute damping coefficient (from previously computed deflection - experimental) for user specified velocity and force values
+        \item   Plot damping coefficient vs velocity
+        \item   Export data (curvature of exponentially decaying vibration - delta, velocity, and damping coefficient) for user specified force value
+        \item   Calibrate deflection data from simulation to compare with previously computed deflection (experimental)
+        \item   Reset calibrated simulation data to its original values
+
+    \end{enumerate}
+
+\subsection{Manual}
+
+    \begin{enumerate}
+
+        \item   Run faml\textunderscore Trommel\textunderscore GUI.m
+
+        \item   Import experimental data using ``Browse" button next to ``Experimental Data". This will import
+    the experimental data and plot the following: 4th Sensor Displacement vs Time, 5th Sensor Displacement vs
+    Time, and 6th Acceleration vs Time in both GUI environment and figures
+
+        \item   Insert the offset and correction factor value, and press ``Calibrate" button. This will compute and plot Deflection vs Time.
+
+        \item   Insert velocity and force values, and press ``Calculate Damping" to
+    calculate damping coefficient. This will take the average of each excitation
+    cycle of deflection data (computed in the previous step), compute damping
+    coefficient, and plot the followings: Averaged deflection, Peak values, and
+    exponential curve regenerated from the damping coefficient. The data computed will be displayed in the table
+
+        \item   Repeat Step 2 - 4 until you get sufficient amount data for a given force (wheel load)
+
+        \item   Plot Damping coefficient vs Velocity graph by using ``Plot
+    Damping". Make sure to plot the graph once you have all the data needed for a
+    given force (otherwise you may need to restart the program). If you accidently
+    computed damping coefficient with wrong velocity and force values, use ``Remove
+    last row" button to remove this. You may also use ``Reset" button to clean up
+    the computed data. Also, do not close the figure with this plot (currently,
+    this is figure 7) since you will need it
+    for plotting next graphs.
+
+        \item   Repeat Step 2 - 6 until you get all the Damping coefficient vs Velocity graphs
+
+        \item   Once you have all the damping coefficients for a given force value, use ``Export Data"
+    button to export the computed data. The following column convention is set (in
+    column order): 1. Delta, 2. Velocity, 3. Damping coefficient. The data will be
+    stored in the folder named ``Exported Data\textunderscore MATLAB" in the same
+    directory. The name of the file will be: TP\textunderscore F\textunderscore
+    $\langle$force value$\rangle$N.txt
+
+        \item   Import simulation data using ``Browse" button next to ``Simulation
+    Data". This will import the deflection data obtained from the simulation. 
+
+        \item   Calibrate simulation data for comparing it with experimental data
+    following the same procedure as Step 6 - 10 in Section \ref{hmanual}
+
+    \end{enumerate}
+
+\subsection{Some technical details}
+
+\textbf{Deflection calculation}\\
+
+\noindent Deflection (experimental) is calculated using the following equation:
+
+\[Deflection = (Displacement + Offset)\times Calibration~Factor \]
+
+
+\noindent \textbf{Damping coefficient calculation}\\
+
+\noindent Damping is calculated by assuming that the oscillatory motion follows an exponential function:
+
+\[y = ce^{-\delta t} \]
+
+\noindent where y is the deflection, c is some system related constant,
+$\delta$ is the curvature, and t is time. By taking natural logs, this
+expression is linearised:
+
+\[\ln(y) = -\delta t + \ln (c)\]
+
+\noindent By taking the peak values the averaged deflection cycle and its
+corresponding time values, this linear equation can be achieved by some
+least-square curve-fitting method (\textit{polyfit} was used here). It must be
+noted, if one wishes to extend the code in any way, that when taking the
+reverse log of this linearised equation (e.g. for plotting), it is best to
+avoid using \textit{polyval} since the \textit{polyfit - polyval} combination
+causes numerical instability (pre-formulated mathematical expression is used in
+this GUI). Once the curvature is computed, damping coefficient is computed with
+the following equation:
+
+\[d = 2\delta m \]
+
+\noindent where d is the damping coefficient, and m is mass.
+
+
+%Forklift
+\section{Forklift Module}\label{Forklift}
+
+\subsection{Outline of functionalities}
+
+    \begin{enumerate}
+
+        \item   Data import (.asc file for Experimental data, and .dat file for Simulation data)
+
+        \item   Plotting of data for both Experimental and Simulation data
+
+        \item   Data filtering and quadrature (acceleration to displacement)
+
+        \item   Simulation data calibration (shift in x and y axis, and scale in y axis) for comparison with Experimental data
+
+        \item   Reset calibrated simulation data to its original values
+
+        \item   Export data (displacement vs time)
+
+    \end{enumerate}
+
+\subsection{Manual}
+
+    \begin{enumerate}
+
+        \item   Run faml\textunderscore Forklift\textunderscore GUI
+        
+        \item   Import experimental data using ``Browse" button next to ``Experimental Data". This will import
+the experimental data, filter acceleration data, and compute displacement from acceleration data. Then
+the following plots are generated: 1st Sensor Acceleration (filtered) vs Time, 2nd Sensor
+Acceleration (filtered vs Time, 4th Sensor Velocity vs Time, 1st Sensor Displacement
+(computed) vs Time, and 2nd Sensor Displacement (computed) vs Time in both GUI
+environment and figures
+
+        \item   If one's not satisfied with the quality of filtered
+acceleration value, insert high pass and low pass cut off frequency values (1
+and 30 are set as default, respectively) and then press ``Update". This will
+filter acceleration data and compute displacement with new cut off frequencies
+
+        \item  Import simulation data using ``Browse" button next to
+``Simulation Data". The simulation data to be imported must have the following
+data available (in column order: 1. Time, 2. 1st Sensor Acceleration, 3. 2nd
+Sensor Acceleration, 4. 1st Sensor Displacement, and 5. 2nd Sensor
+Displacement. This will then import the simulation data and plot the following
+plots on the same plot panels as experimental ones: 1st Sensor Acceleration vs
+Time, 2nd Sensor Acceleration vs Time, 1st Sensor Displacement vs Time, and 2nd
+Sensor Displacement vs Time
+
+        \item   Calibrate simulation data for compairing it with experimental data as previously described
+
+        \item   Again, ``Reset" function is available to clean up the calibrated simulation data
+
+        \item   Insert force, velocity, and threshold values, and use ``Export
+displacement" button to export the computed displacement (experimental) data.
+This will generate a folder named ``Exported Data\textunderscore MATLAB" in the
+same directory. The following file name convention is used: Exp\textunderscore
+Stapler\textunderscore f\textunderscore \langle force~value \rangle
+\textunderscore v\textunderscore \langle velocity~value \rangle \textunderscore
+h\textunderscore \langle threshold~value \rangle .dat
+
+    \end{enumerate}
+
+
+\subsection{Some technical details}\label{fdetails}
+Two main aspects are covered in this section: Acceleration data filtering and
+displacement computation. Both of them are implemented in ``faml\textunderscore
+acc2disp.m", so please refer to this function for the actual code lines.
+\newline
+
+\noindent \textbf{Acceleration filtering}\\
+
+\noindent Low pass butterworth filter is used for acceleration filtering. Constant
+sampling rate is computed from the time values and low pass cut off frequency
+is specified by the user (default is set as 1). ``butter" MATLAB built-in
+function is used for this task. The GUI lacks in computation of correct cut-off
+frequency, but is left as a manual job for the user.
+\newline
+
+\noindent \textbf{Displacement computation}\\
+
+\noindent Cumulative trapezoidal quadrature rule is used for displacement computation using ``cumtrapz" MATLAB built-in function. Due to low frequency errors generated from quadrature, high pass filters are applied after each quadrature step. Again, butterworth filter is used for this and high pass cut off frequency can be specified by the user (default is set as 30). In summary, following steps are taken for displacement computation:
+
+    \begin{enumerate}
+
+        \item   Low pass filtering on acceleration
+    
+        \item   Apply cumulative trapezoidal quadrature rule to acceleration data: velocity values are obtained
+
+        \item   High pass filtering on computed velocity data
+
+        \item   Apply cumulative trapezoidal quadrature rule to velocity data: displacement values are obtained
+
+        \item   High pass filtering on computed displacement data
+
+    \end{enumerate}
+
+%\bibliographystyle{abbrv}
+%\bibliography{Manual}
+
+\end{document}

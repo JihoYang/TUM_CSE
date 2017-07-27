@@ -1,0 +1,120 @@
+% Here we do some tests to get used to automatic differentiation
+% with the "adiff" package
+%
+% Lets start with a simple vector of two numbers
+z = [1;2]
+
+z =
+
+     1
+     2
+
+% Let's define a simple (test-)function
+F = @(x) x(1)*x(2)^2
+
+F = 
+
+    @(x)x(1)*x(2)^2
+
+% Obviously we can plug in z as input
+F(z)
+
+ans =
+
+     4
+
+% and we get one scalar.
+% Now: differential numbers!
+% Lets contruct a differential number for z
+zd = adiff(z)
+
+zd = 
+
+	adiff object: 2-by-1
+
+% Now zd is an object. Its internal state saves the values *and*
+% the derivative w.r.t to z
+% If you take z (=Id*z) and ask for the derivative then
+% the result is obvious
+adiffget(zd,'derivative')
+
+ans =
+
+     1     0
+     0     1
+
+% the value(s) saved in zd
+adiffget(zd,'values')
+
+ans =
+
+     1
+     2
+
+% The package "overloaded" a lot of standard matlab functions
+% for example "+", "*", "sin", etc.
+% Remember our "F"? F is using such standard functions
+% => we can also plugin zd as input!
+result = F(zd)
+
+result = 
+
+	adiff object: 1-by-1
+
+% we get as result a differential numer
+% the value is ...
+adiffget(result,'value')
+
+ans =
+
+     4
+
+% This is not surprising. 
+% The derivative is ...
+adiffget(result,'derivative')
+
+ans =
+
+     4     4
+
+% This is the gradient of F at the point z
+% Lets test another function
+G = @(x)  [ sin(x(1))*cos(x(2)); exp(x(1)) ]
+
+G = 
+
+    @(x)[sin(x(1))*cos(x(2));exp(x(1))]
+
+G(z)
+
+ans =
+
+   -0.3502
+    2.7183
+
+% Now we get back a vector
+% If we use the differential number then ...
+result2 = G(zd)
+
+result2 = 
+
+	adiff object: 2-by-1
+
+% The value is obvious
+adiffget(result2,'value')
+
+ans =
+
+   -0.3502
+    2.7183
+
+% And the derivative has to be a 2x2 matrix
+adiffget(result2,'derivative')
+
+ans =
+
+   -0.2248   -0.7651
+    2.7183         0
+
+% Thats the DG(z) the derivative of G at z
+diary off

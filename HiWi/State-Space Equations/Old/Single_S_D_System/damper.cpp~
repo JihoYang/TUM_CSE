@@ -1,0 +1,194 @@
+/*
+ * damper.cpp
+ *
+ *  Created on: Dec 18, 2012
+ *      Author: aditya
+ */
+
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <vector>
+#include "init.h"
+
+void getGroundProps(double time, double stepHeight, double* displacement, double *velocity);
+
+void getNextTimeStepValues(double xN, double vN, double aN, double dt, double k, double c, double mass,
+							  double time, double springLength, double stepHeight, double *xN1, double *vN1, double *aN1);
+
+int main(int argc, char *argv[]) {/**
+ * Method for obtaining the ground displacement and velocity depending on time
+ */
+void getGroundProps(double time, double stepHeight, double* displacement, double *velocity){
+
+	double stepLength = 0.05;
+
+	if(time < stepLength){
+		//*displacement = -(stepHeight/0.05/1000)*time;
+		//*velocity = -(stepHeight/0.05/1000);
+		*displacement = 0.0;
+		*velocity = 0.0;
+	} else {
+		*displacement  = 0.0;
+		*velocity = 0.0;
+	}
+
+}
+
+	/**
+	 * Values are to be read from the input file.
+	 */
+	double stiffCoeff;		// Stiffness Coefficient.
+	double dampCoeff;		// Damping Coefficient.
+	double mass; 			// Mass of the object.
+	double initialTension; // Initial tension in the spring used to calculate the free length of the spring
+	double springFreeLen;	// Free length of the spring :: Should be more than 500 -> mass position
+
+	double tStart;			// Simulation Start time
+	double tEnd;			// Simulation End time
+	double stepHeight;		// Height of the step input
+							// Always maximum at 0.05 seconds after tStart
+	double dt;				// time Step
+	double g;				// Gravity constant in -y direction
+
+	double massIniPosition = 0.5; // Initial position of the mass
+	double springLength = 0;	   // Length of the spring used to calculate spring force
+
+	double simTime = tStart; 	// Current simulation time
+	long int count = 0; 		// Iteration count
+
+	std::vector<double> position; 	// Vector holding position of the mass with time
+	std::vector<double> acc;  	// Vector holding Acceleration of the mass with time
+	std::vector<double> vel;  	// Vector holding Velocity of the mass with time
+	std::vector<double> Stime; 	// Vector holding time.
+	std::vector<double> force; 	// Vector holding force on the mass.
+
+
+	/**
+	 * Checking if we have both input and output file name.
+	 */
+	if(argc < 2){
+		std::cout<<"Please provide 1. Input file name with path"<<std::endl;
+		std::cout<<"               2. Output file name(limited to 90 Characters)"<<std::endl;
+		return 1;
+	}
+
+	char *inputFile = argv[1]; // Name of the input file including path.
+	char *outputFile = argv[2]; // Name of the output file to be written.
+
+	/**
+	 *  Initializing the velocity and displacement
+	 *  to Zero at the start of Simulation
+	 */
+	position.push_back(0.0);
+	vel.push_back(0.0);
+	Stime.push_back(tStart);
+	acc.push_back(0.0);
+
+	/**
+	 * Reading the input file.
+	 */
+	std::cout<<std::endl;
+	read_parameters(inputFile, &stiffCoeff, &dampCoeff, &mass, &tEnd, &tStart, &stepHeight, &dt, &g, &initialTension);
+	std::cout<<std::endl;
+	double dt_original = dt;
+	/**
+	 * Calculating the initial length of the spring
+	 */
+	springFreeLen = massIniPosition + (initialTension/stiffCoeff);
+
+	// Calculating the gravitation force on the mass
+	double gravityForce = mass*g;
+	/**
+	 * Time Loop
+	 */
+	while(simTime < tEnd){
+
+		/**
+		 * Temporary variables holding velocity, displacement and accelerations
+		 */
+		double xGround;		// Input Displacement
+		double vGround;		// Input Velocity
+		double x_n1;	// Displacement in next time step
+		double v_n1;	// Velocity in next time step
+		double acc_n1;	// Acceleration in current time step
+		/**
+		 * Setting the input displacement and velocity
+		 * according to the step input
+		 */
+		getGroundProps(simTime, stepHeight, &xGround, &vGround);
+
+		getNextTimeStepValues(position.at(count), vel.at(count), acc.at(count), dt, stiffCoeff, dampCoeff,
+							  mass, simTime, stepHeight, springFreeLen, &x_n1, &v_n1, &acc_n1);
+
+		position.push_back(x_n1);
+		vel.push_back(v_n1);
+		acc.push_back(acc_n1);
+		force.push_back(acc_n1*mass);
+
+		if(simTime < 0.05)
+			dt = dt_original/10;
+		else
+			dt = dt_original;
+
+		simTime +=  dt;
+		Stime.push_back(simTime);
+		// Updating the iteration count
+		count ++;
+
+	} // End of time Loop
+
+
+	// Writing the output in the specified file.
+	write_output(outputFile,Stime, position, vel, acc, force, massIniPosition);
+
+	std::cout<<"Successfully Completed Simulation !!!"<<std::endl;
+	std::cout<<std::endl;
+
+	return 1;
+}
+
+/**
+ * Function which performs the implicit midpoint rule formulation of a quantity according to the
+ * multi body equation of single damper system.
+ */
+void getNextTimeStepValues(double xN, double vN, double aN, double dt, double k,double c, double mass,
+							  double time, double stepHeight, double springLength, double *xN1, double *vN1, double *aN1){
+
+	double xGn1,vGn1;
+	getGroundProps(time+dt,stepHeight,&xGn1,&vGn1);
+
+	double rightCoeff = (1+ ((dt*c)/(2*mass)) + ((k*dt*dt)/(4*mass)));
+	double leftCoeff1 = (aN + k*xGn1 + springLength + c*vGn1 - mass*9.81);
+	double leftCoeff2 = (xN + dt*0.5*vN);
+
+	*vN1 = ( vN + dt*(leftCoeff1)/(2*mass) - k*dt*leftCoeff2/(2*mass) ) / rightCoeff;
+
+	*xN1 = xN + dt*0.5*(vN + *vN1);
+
+	*aN1 = -(k* (*xN1 - xGn1 - springLength) + c*(*vN1 - vGn1) + mass*9.81)/mass;
+}
+
+
+
+
+/**
+ * Method for obtaining the ground displacement and velocity depending on time
+ */
+void getGroundProps(double time, double stepHeight, double* displacement, double *velocity){
+
+	double stepLength = 0.05;
+
+	if(time < stepLength){
+		//*displacement = -(stepHeight/0.05/1000)*time;
+		//*velocity = -(stepHeight/0.05/1000);
+		*displacement = 0.0;
+		*velocity = 0.0;
+	} else {
+		*displacement  = 0.0;
+		*velocity = 0.0;
+	}
+
+}
+

@@ -1,0 +1,327 @@
+! Adams/View MD Adams R3 (built Mar  6 2008)
+! Graphics:  OpenGL
+! Enter a command, '?', or 'help'.
+var set var=.gui.new_session.b_directory.newdir str="U:\spring_damper_test\user_model_Spring_damper"
+if cond=(!str_is_space(.gui.new_session.b_directory.newdir))
+   var set var=.gui.new_session.b_directory.success int=(CHDIR(.gui.new_session.b_directory.newdir))
+   var del var=.gui.new_session.b_directory.success
+   interface field set field=.gui.new_session.f_directory str="U:\spring_damper_test\user_model_Spring_damper"
+end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !  New Session - Set units, Create a model, and set gravity
+default units len=mm mass=kg force=newton
+model create model="test_1" fit_to_view=no
+part attrib part_name=ground name_vis=off
+part modify rigid_body mass_properties part_name=ground material=.materials.steel
+force create body gravitational gravity=gravity &
+          x_comp=0 y_comp=-9806.65 z_comp=0
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Using software OpenGL overlay plane emulation
+interface dialog undisplay dialog=.gui.dbox_wheel_tire
+interface dialog display dialog=.gui.sim_set_panel param="dynamics"
+interface dialog undisplay dialog=.gui.sim_set_panel
+interface dialog display dialog=.gui.sim_set_panel param="executable"
+simulation set choice = cplusplus
+simulation set solver_preference = external
+interface dialog undisplay dialog=.gui.sim_set_panel
+interface dialog display dialog=.gui.sim_set_panel param="executable"
+simulation set solver_preference = external
+   simulation set user = "U:/spring_damper_test/user_model_Spring_damper/myview.bat"
+interface dialog undisplay dialog=.gui.sim_set_panel
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  SELECT OBJECT
+undo begin
+default coordinate_system default_coordinate_system=.test_1
+undo end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+mdi fbDisplay mode="Design Function" &
+! >> mdi fbDisplay mode="Design Function" &
+   insert=.gui.dbox_wheel_tire.f_mass func_text=""
+! &>    insert=.gui.dbox_wheel_tire.f_mass func_text=""
+! >> !"Design Function"
+! >> !.gui.dbox_wheel_tire.f_mass
+! >> !""
+! >> !""
+! >> !(none)
+! >> !""
+! >> !END_OF_PARAMETERS
+! >> file log command=off
+! >> def com echo=off
+interface dialog undisplay dialog=.gui.funcBldr
+mdi fbDisplay mode="Design Function" &
+! >> mdi fbDisplay mode="Design Function" &
+   insert=.gui.dbox_wheel_tire.f_Ixx_Iyy func_text=""
+! &>    insert=.gui.dbox_wheel_tire.f_Ixx_Iyy func_text=""
+! >> !"Design Function"
+! >> !.gui.dbox_wheel_tire.f_Ixx_Iyy
+! >> !""
+! >> !""
+! >> !(none)
+! >> !""
+! >> !END_OF_PARAMETERS
+! >> file log command=off
+! >> def com echo=off
+int dia mod dia=.gui.funcBldr exec=""
+interface dialog undisplay dialog=.gui.funcBldr
+mdi create_macro entity_type=vpg_road field_name=.gui.dbox_wheel_tire.f_road_name
+! >> mdi create_macro entity_type=vpg_road field_name=.gui.dbox_wheel_tire.f_road_name
+! >> !
+! >> ! BEGIN_MACRO .MDI.create_macro
+! >> def com echo=off
+interface dialog execute dialog=.gui.dbox_road undisplay=yes
+interface dialog execute dialog=.gui.dbox_road undisplay=yes
+variable set variable_name=.gui.dbox_road.errorFlag int=0
+!  
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_eul &
+    enabled=yes
+atire road create &
+          road_name = ioo &
+               part = .test_1.ground &
+ road_property_file = "U:/spring_damper_test/user_model_Spring_damper/2d_flat.rdf" &
+           graphics = on &
+           location = 0.0,0.0,0.0 &
+        orientation = 0,0,0
+interface radio_box execute radio_box=.gui.r_ori
+if condition=("angles" == "angles")
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_road_eul &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_eul &
+    enabled=yes
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_user_xpoint &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_user_xpoint &
+    enabled=no
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_user_zpoint &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_user_zpoint &
+    enabled=no
+else
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_road_eul &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_eul &
+    enabled=no
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_user_xpoint &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_user_xpoint &
+    enabled=yes
+   interface label modify &
+    label_name=.gui.dbox_road.c_loc_ori.l_user_zpoint &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_road.c_loc_ori.f_user_zpoint &
+    enabled=yes
+end
+!  
+if condition=(.gui.dbox_road.errorFlag)
+   return
+end
+if condition=("create" == "create")
+   variable set variable=.gui.dbox_road.entity &
+    string_value=".test_1.ioo"
+else
+   variable set variable=.gui.dbox_road.entity &
+    string_value="ioo"
+end
+if condition=(db_exists(.gui.dbox_road.entity[1]))
+   if condition=(!.gui.dbox_road.errorFlag && db_exists(".gui.dbox_road.entity_comments"))
+     entity modify &
+       entity_name=(eval(.gui.dbox_road.entity)) &
+       comments=(eval(.gui.dbox_road.entity_comments))
+   end
+   if condition=("create" == "create" && .gui.dbox_road.errorFlag)
+      group object add group_name=.select_list &
+       objects_in_group=(eval(.gui.dbox_road.entity))
+      mdi delete_macro
+   end
+end
+! Update field if requested
+if cond=( ".gui.dbox_wheel_tire.f_road_name" != "" )
+   interface field set field_name=.gui.dbox_wheel_tire.f_road_name &
+      strings="ioo"
+end
+if condition=("create" == "create")
+   interface field set &
+    field=.gui.dbox_road.f_name &
+    string="" execute=no 
+end
+interface dialog execute dialog=.gui.dbox_wheel_tire undisplay=yes
+variable set variable_name=.gui.dbox_wheel_tire.errorFlag int=0
+!----
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_eul &
+    enabled=yes
+atire wheel_tire create &
+             wheel_name = loo &
+                   side = left &
+              &
+                   mass = 303 &
+                Ixx_Iyy = 1000 &
+                    Izz = 1000 &
+          &
+     tire_property_file = "U:/spring_damper_test/user_model_Spring_damper/usr_369.tir" &
+              road_name = .test_1.ioo &
+               location = 0,0,0 &
+            orientation = 0,0,0 &
+  &
+          
+interface radio_box execute radio_box=.gui.r_whe_eul
+if condition=("angles" == "angles")
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_whe_eul &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_eul &
+    enabled=yes
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_user_xpoint &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_user_xpoint &
+    enabled=no
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_user_zpoint &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_user_zpoint &
+    enabled=no
+else
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_whe_eul &
+    enabled=no
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_eul &
+    enabled=no
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_user_xpoint &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_user_xpoint &
+    enabled=yes
+   interface label modify &
+    label_name=.gui.dbox_wheel_tire.c_loc_ori.l_user_zpoint &
+    enabled=yes
+   interface field modify &
+    field_name=.gui.dbox_wheel_tire.c_loc_ori.f_user_zpoint &
+    enabled=yes
+end
+if condition=(.gui.dbox_wheel_tire.errorFlag)
+   return
+end
+if condition=("create" == "create")
+   variable set variable=.gui.dbox_wheel_tire.entity &
+    string_value=".test_1.loo"
+else
+   variable set variable=.gui.dbox_wheel_tire.entity &
+    string_value="loo"
+end
+if condition=(db_exists(.gui.dbox_wheel_tire.entity[1]))
+   if condition=(!.gui.dbox_wheel_tire.errorFlag && db_exists(".gui.dbox_wheel_tire.entity_comments"))
+      entity modify &
+       entity_name=(eval(.gui.dbox_wheel_tire.entity)) &
+       comments=(eval(.gui.dbox_wheel_tire.entity_comments))
+   end
+   if condition=("create" == "create" && .gui.dbox_wheel_tire.errorFlag)
+      group object add group_name=.select_list &
+       objects_in_group=(eval(.gui.dbox_wheel_tire.entity))
+      mdi delete_macro
+   end
+end
+if condition=("create" == "create")
+   interface field set &
+    field=.gui.dbox_wheel_tire.f_wheel &
+    string="" execute=no 
+end
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  SELECT OBJECT
+undo begin
+default coordinate_system default_coordinate_system=.test_1
+group modify group=SELECT_LIST object=.test_1.loo
+undo end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  SELECT OBJECT
+undo begin
+group empty group=SELECT_LIST
+undo end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  SELECT OBJECT
+undo begin
+undo end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! MODIFY View Rotate
+undo begin
+view rotate view=.gui.main.front screen=29.6351439892, -23.9158798306, 0.7911977038
+undo end
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+int radio set radio=.gui.sim_int_panel.control exec=yes choice=Interactive
+if cond=("" == "interactive")
+   int cont undisp cont=c_scripted
+   int cont disp cont=c_interactive
+else
+   int cont disp cont=c_scripted
+   int cont undisp cont=c_interactive
+end
+int dia disp dia=.gui.sim_int_panel
+abort stop_all_commands=no
+mod ver
+interface dialog undisplay dialog=.gui.info_window
+var set var = .mdi.errno int=0
+if cond=("Interactive" == "interactive")
+   if cond=0
+      simulation single reset
+   end
+   if cond=("End Time" == "Forever")
+      simulation single trans &
+         type             = auto_select   &
+         initial_static   = no    &
+         forever          = true               &
+         
+   else
+      simulation single trans &
+         type             = auto_select   &
+         initial_static   = no    &
+                  &
+         end_time        = 5.0         &
+                 &
+         number_of_steps = 50
+! ERROR:  Cannot use the external Adams/Solver for interactive simulations. 
+! Use a simulation script to run the external Adams/Solver.
+      end
+else
+   simulation single scripted &
+      sim_script_name =  &
+      reset_before_and_after = 
+end
+mdi gui_utl_check_sim alert_done=no alert_stop=no
+var set var = .mdi.errno int=0   ! in case a simulation is running
+interface dialog undisplay dialog=.gui.msg_box
+interface dialog undisplay dialog=.gui.sim_int_panel
+interface dialog display dialog=.gui.sim_set_panel param="kinematics"
+interface dialog undisplay dialog=.gui.sim_set_panel
+interface dialog display dialog=.gui.sim_set_panel param="contacts"
+interface dialog undisplay dialog=.gui.sim_set_panel
+interface dialog undisplay dialog=.gui.dbox_wheel_tire
+quit conf=no

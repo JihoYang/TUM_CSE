@@ -1,0 +1,25 @@
+###########################
+#                                                                  #
+#             Makefile for FVM Code                   #
+#                                                                  #
+###########################
+
+CC = g++
+CFLAGS = -g -O3
+LIBS = -lm
+
+all: fvm_trial 
+
+
+SRCG = main_FVM.cpp
+OBJG =  $(addsuffix .o, $(basename $(SRCG)))
+
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+fvm_trial: $(OBJG) 
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	
+clean:
+	rm -rf *.o fvm_trial

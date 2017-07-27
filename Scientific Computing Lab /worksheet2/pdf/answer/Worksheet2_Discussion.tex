@@ -1,0 +1,100 @@
+\documentclass[preprint,authoryear,10pt]{elsarticle}
+\usepackage{lineno,hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{subfigure}
+\usepackage{tabularx,ragged2e}
+
+\modulolinenumbers[5]
+
+\bibliographystyle{model2-names}
+\journal{Scientific Computing Lab I : Worksheet 2}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Scientific Computing Lab I: Worksheet 2 Answer Sheet}
+\author{Nathan Brei}
+\author{Jiho Yang}
+\author{Tord Kriznik Sarensen}
+
+\end{frontmatter}
+
+\linenumbers
+
+\section{Question 1}
+\subsection{a)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 1
+
+\subsection{b)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 2
+
+\subsection{c)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 1
+
+\subsection{d)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 2
+
+\subsection{e)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 1
+
+\subsection{f)}
+
+Since the accuracy is improved by double for 0.5$\delta$t, q = 1
+\newline
+
+It must be noted that regardless of the formulation of the scheme (be it explicit of implicit), the accuracy of the solutions only depend on the order of the method implemented. This implies that implicit schemes does not make the solution more accurate, but only makes improvements in stability. 
+\newline
+
+It must also be noted that linearised Adams Moulton method is a first order method after all and hence q = 1.
+
+\section{Question 2}
+
+The reason why Adams Moulton method is not solvable for certain $\delta$t is due to discretisation error arising from the time step. Whilst a more linear like function G(x) (which is used as the input for Newton's method) is obtained by having small time steps, bigger time steps will result in a more parabolic function which does not have zero crossing point, hence no solution.
+
+\section{Question 3}
+
+This question really brings down to a sensitive study between $y_{n}$ and $y_{n+1}$.  Assume the relationship between $y_{n}$ and $y_{n+1}$ is $y_{n+1}$ = c + $y_{n}$, where c is a real number. Ideally, for infinitesimally small time step c would be 0, making $y_{n+1}$ = $y_{n}$. By inserting this relationship into the linearised equations:
+\newline
+
+Second part inside the bracket of linearisation 1 becomes:
+\begin{equation}
+\Big(1-\frac{c+y_{n}}{10}\Big)y_{n}
+\end{equation}
+
+Hence,
+
+\begin{equation}
+\Big(1-\frac{y_{n}}{10}\Big)y_{n} - \frac{c}{10}y_{n}
+\end{equation}
+
+Similarly, second part inside the bracket of linearisation 2 becomes:
+\begin{equation}
+\Big(1-\frac{y_{n}}{10}\Big)(c+y_{n})
+\end{equation}
+
+Hence,
+
+\begin{equation}
+\Big(1-\frac{y_{n}}{10}\Big)y_{n} + \Big(1-\frac{y_{n}}{10}\Big)c
+\end{equation}
+
+The last terms in equations (2) and (3) are the error terms arising from linearisation. Such deviation is smaller from the linearisation 1 than linearisation 2 (try with varying $y_{n}$ values). Therefore, linearisation 1 works better than linearisation 2. 
+
+\section{Question 4}
+
+\subsection{1)}
+For the IVP from worksheet 1, explicit scheme is preferred due to its fast convergence. As previously discussed, implicit schemes does not make solution more accurate but only make improvements in stability. Considering no divergence is observed when using explicit scheme for the ODE from the worksheet 1, there is no need to use implicit schemes which would lead to slower convergence. 
+
+\subsection{2)}
+For the IVP from worksheet 2, the question really brings down to the accuracy required. For cases where a high accuracy is desired, explicit schemes would be the right choice since it's faster than implicit schemes, whilst the accuracy for a given time step is the same for both (provided the same order method is used). On the other hand, if accuracy is not as emphasised as the computation time, implicit schemes would be preferred since big time steps with explicit schemes will explode the solution. 
+
+\end{document}
+
+
